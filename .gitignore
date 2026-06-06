@@ -1,0 +1,4 @@
+/target
+**/*.rs.bk
+/fuzz/corpus
+/fuzz/target

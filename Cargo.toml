@@ -1,0 +1,32 @@
+[package]
+name = "nostamper"
+version = "0.1.0"
+edition = "2021"
+description = "Build and validate Event Timestamp Attestations (kind 1041) for Nostr: a lightweight, trusted-signer event-timestamping primitive complementary to NIP-03."
+license = "Apache-2.0"
+repository = "https://github.com/sashite/nostamper.rs"
+readme = "README.md"
+keywords = ["nostr", "nip", "timestamp", "attestation"]
+categories = ["cryptography", "api-bindings"]
+exclude = [".github/", "fuzz/", "rust-toolchain.toml", "rustfmt.toml", "deny.toml"]
+
+[dependencies]
+nostr = { version = "0.44", default-features = false, features = ["std"] }
+
+# Security posture: no unsafe, no undocumented public surface, and the
+# read/validation path is proven total by the compiler (no panic-capable
+# operations). Test modules locally re-allow the test-only lints.
+[lints.rust]
+unsafe_code = "forbid"
+missing_docs = "deny"
+missing_debug_implementations = "warn"
+
+[lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+indexing_slicing = "deny"
+arithmetic_side_effects = "deny"
+
+[dev-dependencies]
+proptest = "1.11.0"
