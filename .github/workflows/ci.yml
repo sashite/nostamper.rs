@@ -38,11 +38,22 @@ jobs:
   fuzz-build:
     name: Fuzz harness build (nightly)
     runs-on: ubuntu-latest
+    # The repo-root rust-toolchain.toml pins stable 1.96, which outranks
+    # `rustup default`. RUSTUP_TOOLCHAIN forces nightly for every cargo/rustc in
+    # this job (needed for -Zsanitizer=address) and outranks the toolchain file.
+    env:
+      RUSTUP_TOOLCHAIN: nightly
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@nightly
-      - uses: taiki-e/install-action@cargo-fuzz
-      # Compile-only: ensures the fuzz harness does not bitrot. Actual fuzzing
-      # runs are performed out of band (cargo +nightly fuzz run validate).
+      - name: Install cargo-fuzz
+        # Install via cargo so the binary lands in $CARGO_HOME/bin, the directory
+        # cargo always searches for external subcommands regardless of toolchain.
+        # No --locked: cargo-fuzz's bundled lockfile pins dependencies (e.g.
+        # rustix 0.36) too old to compile on a current nightly; letting cargo
+        # resolve fresh, compiler-compatible versions avoids the build failure.
+        run: cargo install cargo-fuzz
       - name: Build fuzz targets
+        # Compile-only: ensures the fuzz harness does not bitrot. Actual fuzzing
+        # runs happen out of band (cargo fuzz run validate).
         run: cargo fuzz build
