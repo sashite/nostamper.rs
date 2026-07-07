@@ -119,4 +119,4 @@ top of this document regarding the proposed NIP and the tentative `1041` kind.
 
 ## License
 
-Licensed under the [Apache License, Version 2.0](LICENSE).
+Licensed under the [Apache License, Version 2.0](LICENSE). See [NOTICE](NOTICE).
