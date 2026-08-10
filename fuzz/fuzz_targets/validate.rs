@@ -3,8 +3,7 @@
 
 use libfuzzer_sys::fuzz_target;
 use nostamper::{attested_event_id, validate};
-use nostr::util::JsonUtil;
-use nostr::Event;
+use nostr::event::Event;
 
 // Fuzzes the realistic untrusted path: arbitrary bytes are read as UTF-8, parsed
 // as a Nostr event, then run through the crate's read path. The only assertion

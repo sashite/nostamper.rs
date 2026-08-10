@@ -57,7 +57,7 @@ proptest! {
         let parsed: Vec<Tag> = tags.into_iter().filter_map(|t| Tag::parse(t).ok()).collect();
         let event = EventBuilder::new(Kind::Custom(kind), content)
             .tags(parsed)
-            .sign_with_keys(&Keys::generate())
+            .finalize(&Keys::generate())
             .unwrap();
 
         // Ne paniquent jamais ; et sont déterministes (fonctions pures).
@@ -91,7 +91,7 @@ proptest! {
 
         let event = builder
             .to_event_builder()
-            .sign_with_keys(&Keys::generate())
+            .finalize(&Keys::generate())
             .unwrap();
 
         prop_assert!(validate(&event).is_ok());

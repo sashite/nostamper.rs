@@ -37,7 +37,9 @@
 //! (direct keys, NIP-07, NIP-46):
 //!
 //! ```
-//! use nostr::prelude::*;
+//! use nostr::event::{EventId, FinalizeEvent};
+//! use nostr::key::Keys;
+//! use nostr::types::RelayUrl;
 //! use nostamper::{validate, AttestationBuilder};
 //!
 //! # fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -50,7 +52,7 @@
 //! let attestation = AttestationBuilder::new(attested)
 //!     .relay_hint(relay)
 //!     .to_event_builder()
-//!     .sign_with_keys(&keys)?;
+//!     .finalize(&keys)?;
 //!
 //! assert!(validate(&attestation).is_ok());
 //! # Ok(())

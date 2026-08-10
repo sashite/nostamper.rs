@@ -18,7 +18,8 @@
 //! checks the former only. A consumer relying on an attestation MUST also verify
 //! the event's signature (`event.verify()`) per NIP-01.
 
-use nostr::{Event, EventId, Kind, Tag, Timestamp};
+use nostr::event::{Event, EventId, Kind, Tag};
+use nostr::types::Timestamp;
 
 use crate::constants::{KIND, MARKER_ATTESTS};
 use crate::error::ValidationError;
@@ -107,7 +108,7 @@ mod tests {
     fn signed(kind: u16, content: &str, tags: Vec<Tag>) -> Event {
         EventBuilder::new(Kind::Custom(kind), content)
             .tags(tags)
-            .sign_with_keys(&Keys::generate())
+            .finalize(&Keys::generate())
             .unwrap()
     }
 
@@ -179,7 +180,7 @@ mod tests {
         let event = EventBuilder::new(Kind::Custom(KIND), "")
             .tags([attests_tag(ATTESTED)])
             .custom_created_at(Timestamp::from(1_000))
-            .sign_with_keys(&Keys::generate())
+            .finalize(&Keys::generate())
             .unwrap();
 
         assert!(is_temporally_consistent(&event, Timestamp::from(1_000)));

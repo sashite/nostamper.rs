@@ -20,7 +20,7 @@ const ROOT: &str = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 fn signed(kind: u16, content: &str, tags: Vec<Tag>) -> Event {
     EventBuilder::new(Kind::Custom(kind), content)
         .tags(tags)
-        .sign_with_keys(&Keys::generate())
+        .finalize(&Keys::generate())
         .unwrap()
 }
 

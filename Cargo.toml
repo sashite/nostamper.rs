@@ -1,6 +1,6 @@
 [package]
 name = "nostamper"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 description = "Build and validate Event Timestamp Attestations (kind 1041) for Nostr: a lightweight, trusted-signer event-timestamping primitive complementary to NIP-03."
 license = "Apache-2.0"
@@ -11,7 +11,7 @@ categories = ["cryptography", "api-bindings"]
 exclude = [".github/", "fuzz/", "rust-toolchain.toml", "rustfmt.toml", "deny.toml"]
 
 [dependencies]
-nostr = { version = "0.44", default-features = false, features = ["std"] }
+nostr = { version = "0.45", default-features = false, features = ["std"] }
 
 # Security posture: no unsafe, no undocumented public surface, and the
 # read/validation path is proven total by the compiler (no panic-capable
@@ -30,3 +30,9 @@ arithmetic_side_effects = "deny"
 
 [dev-dependencies]
 proptest = "1.11.0"
+
+# `Keys::generate` moved behind the `os-rng` feature in nostr 0.45. Only the
+# tests and the doc example generate keys — the primitive itself never does — so
+# the feature is asked for here rather than widening what every dependent
+# compiles.
+nostr = { version = "0.45", default-features = false, features = ["std", "os-rng"] }

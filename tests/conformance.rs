@@ -38,7 +38,7 @@ fn une_attestation_construite_satisfait_les_regles_must() {
     let event = AttestationBuilder::new(attested)
         .relay_hint(relay())
         .to_event_builder()
-        .sign_with_keys(&keys)
+        .finalize(&keys)
         .unwrap();
 
     // Règles MUST de la spec : kind 1041, content vide, exactement un tag attests.
@@ -62,7 +62,7 @@ fn contexte_et_p_restent_conformes() {
         .context(root, Some(relay()), "sashite:session")
         .notify(other.public_key())
         .to_event_builder()
-        .sign_with_keys(&keys)
+        .finalize(&keys)
         .unwrap();
 
     // Le contexte ajoute un second tag `e`, mais un seul porte `attests`.
@@ -77,7 +77,7 @@ fn coherence_temporelle_via_api_publique() {
     let event = AttestationBuilder::new(EventId::parse(ATTESTED).unwrap())
         .created_at(Timestamp::from(1_000))
         .to_event_builder()
-        .sign_with_keys(&keys)
+        .finalize(&keys)
         .unwrap();
 
     assert!(is_temporally_consistent(&event, Timestamp::from(1_000)));

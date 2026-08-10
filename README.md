@@ -39,7 +39,9 @@ tags are permitted and ignored by validation.
 ## Usage
 
 ```rust
-use nostr::prelude::*;
+use nostr::event::{EventId, FinalizeEvent};
+use nostr::key::Keys;
+use nostr::types::RelayUrl;
 use nostamper::{validate, AttestationBuilder};
 
 let keys = Keys::generate();
@@ -53,7 +55,7 @@ let relay = RelayUrl::parse("wss://relay.example.com").expect("valid relay url")
 let attestation = AttestationBuilder::new(attested)
     .relay_hint(relay)
     .to_event_builder()
-    .sign_with_keys(&keys)
+    .finalize(&keys)
     .expect("signing succeeds");
 
 // Stateless conformance check.
@@ -64,7 +66,8 @@ An application may attach context for discovery via an additional, namespaced
 `e` tag (the marker must not be the reserved `attests`):
 
 ```rust
-use nostr::prelude::*;
+use nostr::event::EventId;
+use nostr::types::RelayUrl;
 use nostamper::AttestationBuilder;
 
 let attested = EventId::parse(
@@ -112,9 +115,31 @@ higher-layer specification.
 - Building is **infallible**.
 - Supply chain is policed in CI by `cargo-deny` (advisories, licenses, sources).
 
+### Running the fuzz target
+
+The harness lives in `fuzz/`, a standalone workspace, and needs **nightly** —
+`cargo-fuzz` passes `-Zsanitizer=address`. rustup picks the toolchain from the
+*working directory*, and the repo-root `rust-toolchain.toml` pins stable, so
+running `cargo fuzz` from the root selects stable and fails before compiling
+anything ("the option `Z` is only accepted on the nightly compiler"). Run it
+from inside `fuzz/`, where `fuzz/rust-toolchain.toml` applies:
+
+```sh
+rustup toolchain install nightly   # once
+cd fuzz
+cargo fuzz build                   # compile only — what CI checks
+cargo fuzz run validate            # actually fuzz
+```
+
+From the repo root, force the toolchain instead — this is what the CI job does:
+
+```sh
+RUSTUP_TOOLCHAIN=nightly cargo fuzz build
+```
+
 ## Status and MSRV
 
-`nostr` `0.44`. Developed and tested on Rust `1.96`. See the status note near the
+`nostr` `0.45`. Developed and tested on Rust `1.96`. See the status note near the
 top of this document regarding the proposed NIP and the tentative `1041` kind.
 
 ## License

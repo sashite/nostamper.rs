@@ -10,7 +10,9 @@
 //! [`AttestationBuilder::to_event_builder`] yields an unsigned [`EventBuilder`]
 //! that the caller signs with any signer (direct keys, NIP-07, NIP-46).
 
-use nostr::{EventBuilder, EventId, Kind, PublicKey, RelayUrl, Tag, TagKind, Timestamp};
+use nostr::event::{EventBuilder, EventId, Kind, Tag};
+use nostr::key::PublicKey;
+use nostr::types::{RelayUrl, Timestamp};
 
 use crate::constants::{KIND, MARKER_ATTESTS};
 
@@ -116,7 +118,7 @@ impl AttestationBuilder {
             ));
         }
         for pubkey in &self.notify {
-            tags.push(Tag::custom(TagKind::p(), [pubkey.to_hex()]));
+            tags.push(Tag::custom("p", [pubkey.to_hex()]));
         }
 
         let mut builder = EventBuilder::new(Kind::Custom(KIND), "").tags(tags);
@@ -132,7 +134,7 @@ impl AttestationBuilder {
 /// fourth position per NIP-10.
 fn e_tag(event_id: &EventId, relay_hint: Option<&RelayUrl>, marker: &str) -> Tag {
     let relay = relay_hint.map(RelayUrl::to_string).unwrap_or_default();
-    Tag::custom(TagKind::e(), [event_id.to_hex(), relay, marker.to_string()])
+    Tag::custom("e", [event_id.to_hex(), relay, marker.to_string()])
 }
 
 #[cfg(test)]
@@ -166,7 +168,7 @@ mod tests {
         let event = AttestationBuilder::new(attested_id())
             .relay_hint(relay())
             .to_event_builder()
-            .sign_with_keys(&keys)
+            .finalize(&keys)
             .unwrap();
 
         event.verify().unwrap();
@@ -182,7 +184,7 @@ mod tests {
         let event = AttestationBuilder::new(attested_id())
             .relay_hint(relay())
             .to_event_builder()
-            .sign_with_keys(&keys)
+            .finalize(&keys)
             .unwrap();
 
         let slice = event.tags.iter().next().unwrap().as_slice();
@@ -195,7 +197,7 @@ mod tests {
         let keys = Keys::generate();
         let event = AttestationBuilder::new(attested_id())
             .to_event_builder()
-            .sign_with_keys(&keys)
+            .finalize(&keys)
             .unwrap();
 
         // Sans relay_hint : le créneau (3e) est vide, le marqueur reste 4e.
@@ -215,7 +217,7 @@ mod tests {
             .context(root, Some(relay()), "sashite:session")
             .notify(other.public_key())
             .to_event_builder()
-            .sign_with_keys(&keys)
+            .finalize(&keys)
             .unwrap();
 
         assert_eq!(validate(&event), Ok(()));
@@ -242,7 +244,7 @@ mod tests {
         let event = AttestationBuilder::new(attested_id())
             .created_at(when)
             .to_event_builder()
-            .sign_with_keys(&keys)
+            .finalize(&keys)
             .unwrap();
 
         assert_eq!(event.created_at, when);
