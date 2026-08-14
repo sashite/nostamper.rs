@@ -7,11 +7,11 @@
 
 /// The event kind for an Event Timestamp Attestation.
 ///
-/// `1041` sits adjacent to NIP-03's `1040`, signalling a related concern —
-/// event-level timestamping — under a different trust model. The value is
-/// tentative pending a NIP assignment; implementers should confirm it is
-/// unclaimed before adoption.
-pub const KIND: u16 = 1041;
+/// `3410` sits in the block the consuming suite occupies (decision M-14,
+/// 2026-08-11: renumbered from the NIP-03-adjacent `1041`, whose neighborhood
+/// belongs to OpenTimestamps evolutions). Unclaimed in the upstream NIP
+/// registry as of this crate's last revision.
+pub const KIND: u16 = 3410;
 
 /// The marker required on the `e` tag that references the attested event, as
 /// that tag's fourth element, following the NIP-10 marker convention.
@@ -27,7 +27,7 @@ mod tests {
     fn valeurs_de_protocole_figees() {
         // The wire values are part of the protocol contract: pinning them turns
         // any change into a deliberate, test-breaking decision.
-        assert_eq!(KIND, 1041);
+        assert_eq!(KIND, 3410);
         assert_eq!(MARKER_ATTESTS, "attests");
     }
 }

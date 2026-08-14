@@ -1,11 +1,11 @@
 # nostamper
 
-Build and validate **Event Timestamp Attestations** (NIP-XXXX, kind `1041`) for
+Build and validate **Event Timestamp Attestations** (NIP-XXXX, kind `3410`) for
 [Nostr](https://github.com/nostr-protocol/nostr).
 
 > **Status — proposed NIP.** This crate implements *Event Timestamp Attestations*,
 > a NIP currently under review ([nostr-protocol/nips#2359][pr]) and **not yet
-> accepted**. The kind number `1041` is tentative and the wire format may change
+> accepted**. The kind number `3410` is tentative and the wire format may change
 > until the proposal is merged. Pin an exact version and review the [proposal][pr]
 > before relying on it in production.
 >
@@ -26,7 +26,7 @@ higher layer's concern.
 
 ## Conformance rules (stateless)
 
-A conforming attestation is a kind-`1041` event with:
+A conforming attestation is a kind-`3410` event with:
 
 - exactly one `e` tag carrying the marker `attests` as its fourth element (the
   reference to the attested event), and
@@ -140,7 +140,7 @@ RUSTUP_TOOLCHAIN=nightly cargo fuzz build
 ## Status and MSRV
 
 `nostr` `0.45`. Developed and tested on Rust `1.96`. See the status note near the
-top of this document regarding the proposed NIP and the tentative `1041` kind.
+top of this document regarding the proposed NIP and the tentative `3410` kind.
 
 ## License
 

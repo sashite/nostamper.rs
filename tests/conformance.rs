@@ -41,7 +41,7 @@ fn une_attestation_construite_satisfait_les_regles_must() {
         .finalize(&keys)
         .unwrap();
 
-    // Règles MUST de la spec : kind 1041, content vide, exactement un tag attests.
+    // Règles MUST de la spec : kind 3410, content vide, exactement un tag attests.
     assert_eq!(event.kind, Kind::Custom(KIND));
     assert!(event.content.is_empty());
     assert_eq!(attests_tag_count(&event), 1);

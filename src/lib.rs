@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
-//! Event Timestamp Attestations for Nostr — NIP-XXXX, kind `1041`.
+//! Event Timestamp Attestations for Nostr — NIP-XXXX, kind `3410`.
 //!
 //! **Status — proposed NIP.** This implements a NIP currently under review
 //! ([nostr-protocol/nips#2359](https://github.com/nostr-protocol/nips/pull/2359))
-//! and **not yet accepted**. The kind number `1041` is tentative and the wire
+//! and **not yet accepted**. The kind number `3410` is tentative and the wire
 //! format may change until the proposal is merged; pin an exact version and
 //! review the proposal before relying on it in production.
 //!

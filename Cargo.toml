@@ -1,8 +1,8 @@
 [package]
 name = "nostamper"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2021"
-description = "Build and validate Event Timestamp Attestations (kind 1041) for Nostr: a lightweight, trusted-signer event-timestamping primitive complementary to NIP-03."
+description = "Build and validate Event Timestamp Attestations (kind 3410) for Nostr: a lightweight, trusted-signer event-timestamping primitive complementary to NIP-03."
 license = "Apache-2.0"
 repository = "https://github.com/sashite/nostamper.rs"
 readme = "README.md"

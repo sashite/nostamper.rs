@@ -8,7 +8,7 @@ use nostr::event::Event;
 // Fuzzes the realistic untrusted path: arbitrary bytes are read as UTF-8, parsed
 // as a Nostr event, then run through the crate's read path. The only assertion
 // is the absence of panics — `validate` and `attested_event_id` must be total on
-// every input. Seed the corpus with a real kind-1041 attestation JSON to speed
+// every input. Seed the corpus with a real kind-3410 attestation JSON to speed
 // up coverage of the `attests`-tag branches.
 fuzz_target!(|data: &[u8]| {
     if let Ok(json) = core::str::from_utf8(data) {
